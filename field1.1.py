@@ -175,7 +175,7 @@ class Player(pygame.sprite.Sprite):
         new = Player(self.x + x, self.y + y)
         collide = pygame.sprite.spritecollide(new, bricks_group, False)
         collide_with_en = pygame.sprite.spritecollide(new, enemy_group, False)
-        if collide or collide_with_en:
+        if collide or collide_with_en or self.rect.bottom > 600:
             y = 0
         self.x += x
         self.y += y
@@ -195,7 +195,7 @@ class Player(pygame.sprite.Sprite):
         new = Player(self.x + x, self.y + y)
         collide = pygame.sprite.spritecollide(new, bricks_group, False)
         collide_with_en = pygame.sprite.spritecollide(new, enemy_group, False)
-        if collide or collide_with_en:
+        if collide or collide_with_en or self.rect.top < 0:
             y = 0
         self.x += x
         self.y += y
@@ -215,7 +215,7 @@ class Player(pygame.sprite.Sprite):
         new = Player(self.x + x, self.y + y)
         collide = pygame.sprite.spritecollide(new, bricks_group, False)
         collide_with_en = pygame.sprite.spritecollide(new, enemy_group, False)
-        if collide or collide_with_en:
+        if collide or collide_with_en or self.rect.left < 0:
             x = 0
         self.x += x
         self.y += y
@@ -237,7 +237,7 @@ class Player(pygame.sprite.Sprite):
         new = Player(self.x + x, self.y + y)
         collide = pygame.sprite.spritecollide(new, bricks_group, False)
         collide_with_en = pygame.sprite.spritecollide(new, enemy_group, False)
-        if collide or collide_with_en:
+        if collide or collide_with_en or self.rect.left > 800:
             x = 0
         self.x += x
         self.y += y
