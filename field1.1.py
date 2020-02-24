@@ -166,8 +166,8 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == flag_x and self.y == flag_y:
-            do_level()
+        # if self.x == flag_x and self.y == flag_y:
+        #     do_level()
 
     def move_player_up(self, x, y):
         COLOR =  "#888888"
@@ -187,8 +187,8 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == flag_x and self.y == flag_y:
-            do_level()
+        # if self.x == flag_x and self.y == flag_y:
+        #     do_level()
     
     def move_player_left(self, x, y):
         COLOR =  "#888888"
@@ -208,8 +208,8 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == flag_x and self.y == flag_y:
-            do_level()
+        # if self.x == flag_x and self.y == flag_y:
+        #     do_level()
 
     def move_player_right(self, x, y):
         COLOR =  "#888888"
@@ -231,8 +231,8 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == flag_x and self.y == flag_y:
-            do_level()
+        # if self.x == flag_x and self.y == flag_y:
+        #     do_level()
     
     def shoot(self):
         bullet = Bullet(self.rect.centerx, self.rect.top)
@@ -375,12 +375,14 @@ def move(st, x, y):
 
     if st.lower() == 'down':
         player.move_player_down(x, y)
+
     if st.lower() == 'up':
         player.move_player_up(x, y)
     if st.lower() == 'left':
         player.move_player_left(x, y)
     if st.lower() == 'right':
         player.move_player_right(x, y)
+
 
 
 levels = [load_level('map1.txt'), load_level('map2.txt'), load_level('map3.txt'), load_level('map4.txt'),
@@ -402,48 +404,53 @@ def do_level():
         return l, s, flag1, flag2
 
 
-#level = load_level('map3.txt')
-level, s, flag_x, flag_y = do_level()
-player, level_x, level_y = s[0], s[1], s[2]
-#flag_x, flag_y = generate_level(level)[1], generate_level(level)[2]
-screen.fill((0, 0, 0))
-bullets = pygame.sprite.Group()
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            terminate()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                move("down", 0, 0.5)
-                shoot_right = False
-                shoot_left = False
-                shoot_up = False
-                shoot_down = True                
-            if event.key == pygame.K_UP:
-                move("up", 0, -0.5)
-                shoot_right = False
-                shoot_left = False
-                shoot_up = True
-                shoot_down = False                
-            if event.key == pygame.K_LEFT:
-                move("left", -0.5, 0)
-                shoot_right = False
-                shoot_left = True
-                shoot_up = False
-                shoot_down = False                
-            if event.key == pygame.K_RIGHT:
-                move("right", 0.5, 0)
-                shoot_right = True
-                shoot_left = False
-                shoot_up = False
-                shoot_down = False                
-            if event.key == pygame.K_SPACE:
-                player.shoot()
-    bullets.update()
-    tiles_group.draw(screen)
-    player_group.draw(screen)
-    bullets.draw(screen)
-    pygame.display.flip()
-    clock.tick(FPS)
+while levels_for_game:
+    level, s, flag_x, flag_y = do_level()
+    player, level_x, level_y = s[0], s[1], s[2]
+    screen.fill((0, 0, 0))
+    bullets = pygame.sprite.Group()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    move("down", 0, 0.5)
+                    shoot_right = False
+                    shoot_left = False
+                    shoot_up = False
+                    shoot_down = True
+                if event.key == pygame.K_UP:
+                    move("up", 0, -0.5)
+                    shoot_right = False
+                    shoot_left = False
+                    shoot_up = True
+                    shoot_down = False
+                if event.key == pygame.K_LEFT:
+                    move("left", -0.5, 0)
+                    shoot_right = False
+                    shoot_left = True
+                    shoot_up = False
+                    shoot_down = False
+                if event.key == pygame.K_RIGHT:
+                    move("right", 0.5, 0)
+                    shoot_right = True
+                    shoot_left = False
+                    shoot_up = False
+                    shoot_down = False
+                if event.key == pygame.K_SPACE:
+                    player.shoot()
+            if player.get_coord()[0] == flag_x and player.get_coord()[1] == flag_y:
+                print(player.get_coord()[0], player.get_coord()[1], flag_x, flag_y)
+                running = False
+                break
+        bullets.update()
+        tiles_group.draw(screen)
+        player_group.draw(screen)
+        bullets.draw(screen)
+        pygame.display.flip()
+        clock.tick(FPS)
+
 pygame.quit()
 sys.exit()
