@@ -166,7 +166,7 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == generate_level(level)[1] and self.y == generate_level(level)[2]:
+        if self.x == flag_x and self.y == flag_y:
             do_level()
 
     def move_player_up(self, x, y):
@@ -187,7 +187,7 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == generate_level(level)[1] and self.y == generate_level(level)[2]:
+        if self.x == flag_x and self.y == flag_y:
             do_level()
     
     def move_player_left(self, x, y):
@@ -208,7 +208,7 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == generate_level(level)[1] and self.y == generate_level(level)[2]:
+        if self.x == flag_x and self.y == flag_y:
             do_level()
 
     def move_player_right(self, x, y):
@@ -231,7 +231,7 @@ class Player(pygame.sprite.Sprite):
         self.x += x
         self.y += y
         self.rect = self.image.get_rect().move(tile_width * self.x, tile_height * self.y)
-        if self.x == generate_level(level)[1] and self.y == generate_level(level)[2]:
+        if self.x == flag_x and self.y == flag_y:
             do_level()
     
     def shoot(self):
@@ -397,12 +397,15 @@ def do_level():
         enemy_group.empty()
         player = None
         l = levels_for_game[0]
-        generate_level(l)
+        s, flag1, flag2 = generate_level(l)
         levels_for_game.remove(l)
+        return l, s, flag1, flag2
 
 
-level = load_level('map3.txt')
-player, level_x, level_y = generate_level(level)[0]
+#level = load_level('map3.txt')
+level, s, flag_x, flag_y = do_level()
+player, level_x, level_y = s[0], s[1], s[2]
+#flag_x, flag_y = generate_level(level)[1], generate_level(level)[2]
 screen.fill((0, 0, 0))
 bullets = pygame.sprite.Group()
 while True:
