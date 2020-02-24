@@ -335,18 +335,30 @@ class Bullet(pygame.sprite.Sprite):
         if shoot_up:
             self.rect.y -= 10
             if self.rect.bottom < 0:
-                self.kill()            
+                self.kill()
+            hit = pygame.sprite.groupcollide(bullets, bricks_group, False,  False)
+            if hit:
+                self.kill()
         elif shoot_down:
             self.rect.y += 10
             if self.rect.bottom > 600:
-                self.kill()            
+                self.kill()
+            hit = pygame.sprite.groupcollide(bullets, bricks_group, False, False)
+            if hit:
+                self.kill()
         elif shoot_left:
             self.rect.x -= 10
             if self.rect.right < 0:
-                self.kill()            
+                self.kill()
+            hit = pygame.sprite.groupcollide(bullets, bricks_group, False, False)
+            if hit:
+                self.kill()
         elif shoot_right:
             self.rect.x += 10
             if self.rect.left > 800:
+                self.kill()
+            hit = pygame.sprite.groupcollide(bullets, bricks_group, False, False)
+            if hit:
                 self.kill()
 
 
