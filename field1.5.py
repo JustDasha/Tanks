@@ -22,7 +22,6 @@ shoot_up = False
 shoot_down = False
 
 
-
 def terminate():
     pygame.quit()
     sys.exit()
@@ -44,7 +43,6 @@ def start_screen():
     intro_text = ["ТАНКИ",
                   "Добро пожаловать в игру!",
                   "Введите имя игрока"]
-
     fon = pygame.transform.scale(load_image('fon1.jpg'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
     font = pygame.font.Font(None, 45)
@@ -57,6 +55,24 @@ def start_screen():
         intro_rect.x = 10
         text_coord += intro_rect.height
         screen.blit(string_rendered, intro_rect)
+
+
+#def game_over_screen():
+#    intro_text = ["ТАНКИ",
+#                 "Вы проиграли!",
+#                 " "]
+#   fon = pygame.transform.scale(load_image('fon1.jpg'), (WIDTH, HEIGHT))
+#   screen.blit(fon, (0, 0))
+#   font = pygame.font.Font(None, 45)
+#   text_coord = 50
+#   for line in intro_text:
+#       string_rendered = font.render(line, 1, pygame.Color('black'))
+#       intro_rect = string_rendered.get_rect()
+#       text_coord += 10
+#       intro_rect.top = text_coord
+#       intro_rect.x = 10
+#       text_coord += intro_rect.height
+#       screen.blit(string_rendered, intro_rect)
 
 
 def load_level(filename):
@@ -107,8 +123,8 @@ def generate_level(level):
                 Tile('empty', x, y)
                 new_player = Player(x, y)
                 player_group.add(new_player)
-            # elif level[y][x] == 'e':
-            #     Tile('empty', x, y)
+            elif level[y][x] == 'e':
+                Tile('empty', x, y)
             #     enem = Enemy(x, y)
             #     enemy_group.add(enem)
             elif level[y][x] == 'f':
@@ -405,7 +421,14 @@ level = load_level('map3.txt')
 player, level_x, level_y = generate_level(level)[0]
 screen.fill((0, 0, 0))
 bullets = pygame.sprite.Group()
-while True:
+left_move = False
+right_move = True
+up_move = False
+down_move = True
+
+
+game = True
+while game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             terminate()
@@ -415,28 +438,31 @@ while True:
                 shoot_right = False
                 shoot_left = False
                 shoot_up = False
-                shoot_down = True                
+                shoot_down = True
             if event.key == pygame.K_UP:
                 move("up", 0, -0.5)
                 shoot_right = False
                 shoot_left = False
                 shoot_up = True
-                shoot_down = False                
+                shoot_down = False
             if event.key == pygame.K_LEFT:
                 move("left", -0.5, 0)
                 shoot_right = False
                 shoot_left = True
                 shoot_up = False
-                shoot_down = False                
+                shoot_down = False
             if event.key == pygame.K_RIGHT:
                 move("right", 0.5, 0)
                 shoot_right = True
                 shoot_left = False
                 shoot_up = False
-                shoot_down = False                
+                shoot_down = False
             if event.key == pygame.K_SPACE:
                 player.shoot()
     bullets.update()
+    hits = pygame.sprite.groupcollide(bullets, player_group, False, False)
+    if hits:
+        game = False
     tiles_group.draw(screen)
     player_group.draw(screen)
     bullets.draw(screen)
